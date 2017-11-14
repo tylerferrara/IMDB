@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -7,8 +8,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 	@Override
 	public List<Node> findShortestPath(Node s, Node t) {
-		List<? extends Node> visited = null;
-		Queue<? extends Node> todo = null;
+		List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
+		Queue<? extends Node> todo = null; 						//Need to create a data type that implements queue, (Queue is an interface?)
 		Map<? extends Node, Integer> distance = null;
 		boolean found = false;
 		
@@ -17,11 +18,12 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		
 		while (todo.size() > 0) {
 			Node n = todo.poll();
-			visited.add(n);
+			visited.add(n); 
 			if (n.equals(t)) {
 				found = true;
 				break;
 			} else {
+				//Add sub-nodes to todo, increase depth of search
 				for (Node n1 : n.getNeighbors()) {
 					if (!todo.contains(n1) && !visited.contains(n1)) {
 						todo.add(n1);
@@ -30,7 +32,6 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				}
 			}
 		}
-		
 		if (found) {
 			Stack<? extends Node> bPath = null;
 			bPath.push(t);
@@ -55,5 +56,6 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return null;
 		}
 	}
+
 
 }
