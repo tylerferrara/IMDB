@@ -32,8 +32,16 @@ public class IMDBActorsGraph implements Graph {
 					
 					if(!currentLine.equals("\t")) {
 						// New actor
-						String actorName = getActor(currentLine);
-						System.out.println(currentLine);
+						String actorName;
+						
+						for(int i = 0; i < currentLine.length() - 1; i++) {
+							if(currentLine.substring(i, i+1).equals("\t")) {
+								actorName = currentLine.substring(0, i).replaceAll(",", "");
+								currentLine = currentLine.substring(i);
+								System.out.println(currentLine);
+								break;
+							}
+						}
 						
 					} else {
 						// Add movies to actor
@@ -87,7 +95,7 @@ public class IMDBActorsGraph implements Graph {
 		for(int i = 0; i < currentLine.length() - 1; i++) {
 			if(currentLine.substring(i, i+1).equals("\t")) {
 				actorName = currentLine.substring(0, i).replaceAll(",", "");
-				currentLine = currentLine.substring(i); // <= Needed Side Effect
+				//currentLine = currentLine.substring(i); // <= Needed Side Effect
 				break;
 			}
 		}
