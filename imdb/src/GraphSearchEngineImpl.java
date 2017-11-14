@@ -39,7 +39,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			int step = distance.get(t).intValue();
 			while (step > 0) {
 				for (Node n1 : n0.getNeighbors()) {
-					if (distance.get(n1).intValue() == distance.get(n0).intValue() - 1) {
+					if (distance.get(n1).intValue() == step - 1) {
 						bPath.push(n1);
 						step--;
 						n0 = n1;
