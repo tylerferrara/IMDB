@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -8,75 +9,56 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 	public List<Node> findShortestPath(Node s, Node t) {
 		List<? extends Node> visited = null;
 		Queue<? extends Node> todo = null;
-		int distance;
+		Map<? extends Node, Integer> distance = null;
+		boolean found = false;
 		
 		todo.add(s);
+		distance.put(s, Integer.valueOf(0));
+		
 		while (todo.size() > 0) {
 			Node n = todo.poll();
 			visited.add(n);
-			
 			if (n.equals(t)) {
+				found = true;
 				break;
 			} else {
 				for (Node n1 : n.getNeighbors()) {
 					if (!todo.contains(n1) && !visited.contains(n1)) {
 						todo.add(n1);
-						distance ++; //Not incrementing correctly
+						distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));
 					}
 				}
 			}
 		}
 		
-		Stack<Node> path = null;
-		Node n0 = t;
-		
-		for (int i = distance; i >= 0;) {
-			path.push(n0);
-			n0 = getNext(n0, s, i);
-			i--;
-		}
-		
-		List<Node> finalPath = null;
-		
-		while(path.size() > 0) {
-			finalPath.add(path.pop());
-		}
-		
-		return finalPath;
-	}
-	
-	private int getDistance(Node s, Node t) {
-		List<? extends Node> visited = null;
-		Queue<? extends Node> todo = null;
-		int distance;
-		
-		todo.add(s);
-		while (todo.size() > 0) {
-			Node n = todo.poll();
-			visited.add(n);
+		if (found) {
+			Stack<? extends Node> bPath = null;
+			bPath.push(t);
+			Node n0 = t;
+			int step = distance.get(t).intValue();
 			
-			if (n.equals(t)) {
-				break;
-			} else {
-				for (Node n1 : n.getNeighbors()) {
-					if (!todo.contains(n1) && !visited.contains(n1)) {
-						todo.add(n1);
-						distance ++; //Not incrementing correctly
+			while (step > 0) {
+				for (Node n1 : n0.getNeighbors()) {
+					if (distance.get(n1).intValue() == distance.get(n0).intValue() - 1) {
+						bPath.push(n1);
+						step = distance.get(n1).intValue();
+						n0 = n1;
+						break; //I'm assuming this will just break the for loop and not the while loop
 					}
 				}
 			}
+			
+			List<? extends Node> fPath = null;
+			
+			while (!bPath.isEmpty()) {
+				fPath.add(bPath.pop());
+			}
+			
+			return fPath;
+		} else {
+			return null;
 		}
 		
-		return distance;
-	}
-	
-	private Node getNext(Node s, Node t, int i) {
-		for (Node n : s.getNeighbors()) {
-			if (getDistance(n, t) == i - 1) {
-				return n;
-			}
-		}
-		return null;
 	}
 
 }
