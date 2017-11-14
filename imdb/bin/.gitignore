@@ -1,0 +1,14 @@
+/DumbTesting.class
+/Graph.class
+/GraphPartialTester.class
+/GraphSearchEngine.class
+/GraphSearchEngineImpl.class
+/GraphSearchGUI$1.class
+/GraphSearchGUI$StringComparator.class
+/GraphSearchGUI.class
+/IMDBActorsGraph.class
+/IMDBMoviesGraph.class
+/Node.class
+/PerformerNode.class
+/hamcrest-core-1.3.jar
+/junit-4.12.jar
