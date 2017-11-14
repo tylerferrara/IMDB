@@ -40,7 +40,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				for (Node n1 : n0.getNeighbors()) {
 					if (distance.get(n1).intValue() == distance.get(n0).intValue() - 1) {
 						bPath.push(n1);
-						step = distance.get(n1).intValue();
+						step--;
 						n0 = n1;
 						break; //I'm assuming this will just break the for loop and not the while loop
 					}
