@@ -36,7 +36,6 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			bPath.push(t);
 			Node n0 = t;
 			int step = distance.get(t).intValue();
-			
 			while (step > 0) {
 				for (Node n1 : n0.getNeighbors()) {
 					if (distance.get(n1).intValue() == distance.get(n0).intValue() - 1) {
@@ -47,18 +46,14 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 					}
 				}
 			}
-			
-			List<? extends Node> fPath = null;
-			
+			List<? extends Node> fPath = null;	
 			while (!bPath.isEmpty()) {
 				fPath.add(bPath.pop());
-			}
-			
+			}	
 			return fPath;
 		} else {
 			return null;
 		}
-		
 	}
 
 }
