@@ -27,23 +27,30 @@ public class IMDBActorsGraph implements Graph {
 				String currentLine;
 				
 				if (searching){
+					
 					currentLine = scanner.nextLine();
-					if(currentLine.equals("")){
-						endOfActor = true;
-						currentLine = scanner.nextLine();
+					
+					if(!currentLine.equals("\t")) {
+						// New actor
+						String actorName = getActor(currentLine);
+						System.out.println(currentLine);
+						
+					} else {
+						// Add movies to actor
+						
 					}
-					// finding actor names
-					if(endOfActor) {
-						endOfActor = false;
-						for(int i = 0; i < currentLine.length() - 1; i++) {
-							if(currentLine.substring(i, i+1).equals("\t")) {
-								String actorName = currentLine.substring(0, i).replaceAll(",", "");
-								
-								currentLine = currentLine.substring(i);
-								break;
-							}
-						}
- 					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
 				}
 			}
 			scanner.close();
@@ -52,11 +59,41 @@ public class IMDBActorsGraph implements Graph {
 		} catch(IOException error) {
 			throw error;
 		}
-	}
-	
-	private void getActors() {
+		
+		
+		
+		
+//		if(currentLine.equals("")){
+//		endOfActor = true;
+//		currentLine = scanner.nextLine();
+//	}
+//	// finding actor names
+//	if(endOfActor) {
+//		endOfActor = false;
+//		for(int i = 0; i < currentLine.length() - 1; i++) {
+//			if(currentLine.substring(i, i+1).equals("\t")) {
+//				String actorName = currentLine.substring(0, i).replaceAll(",", "");
+//				
+//				currentLine = currentLine.substring(i);
+//				break;
+//			}
+//		}
+//		}
 		
 	}
+	
+	private String getActor(String currentLine) {
+		String actorName = null;
+		for(int i = 0; i < currentLine.length() - 1; i++) {
+			if(currentLine.substring(i, i+1).equals("\t")) {
+				actorName = currentLine.substring(0, i).replaceAll(",", "");
+				currentLine = currentLine.substring(i); // <= Needed Side Effect
+				break;
+			}
+		}
+		return actorName;
+	}
+
 
 	@Override
 	public Collection<? extends Node> getNodes() {
