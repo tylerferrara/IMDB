@@ -1,26 +1,33 @@
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MovieNode implements Node{
 	private String name;
-	private Collection<?extends Node> neighbors;
+	private ArrayList<PerformerNode> neighbors;
 	
-	public MovieNode()
-	{
+	public MovieNode() {
 		
 	}
-	public MovieNode(String name, Collection<?extends Node> actors)
-	{
-		this.name =name;
-		this.neighbors=actors;
-		
+	
+	public MovieNode(String name) {
+		this.name = name;
 	}
-	public String getName()
-	{
+	
+	public MovieNode(String name, ArrayList<PerformerNode> neighbors) {
+		this.name = name;
+		this.neighbors = neighbors;
+	}
+	
+	public void setNeighbors(ArrayList<PerformerNode> neighbors) {
+		this.neighbors = neighbors;
+	}
+	
+	public String getName() {
 		return this.name;
 	}
-	public Collection<? extends Node> getNeighbors()
-	{
-		return this.neighbors ;
+	
+	public Collection<? extends Node> getNeighbors() {
+		return this.neighbors;
 	}
 
 }
