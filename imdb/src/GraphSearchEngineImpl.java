@@ -10,7 +10,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 	@Override
 	public List<Node> findShortestPath(Node s, Node t) {
 		List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
-		Queue<? extends Node> todo = new LinkedList<>(); 						//Need to create a data type that implements queue, (Queue is an interface?)
+		Queue<? extends Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
 		Map<? extends Node, Integer> distance = null;
 		boolean found = false;
 		
