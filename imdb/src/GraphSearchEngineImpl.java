@@ -26,7 +26,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			} else {
 				//Add sub-nodes to todo, increase depth of search
 				for (Node n1 : n.getNeighbors()) {
-					if (!todo.contains(n1) && !visited.contains(n1)) {
+					if (!todo.contains(n1) && !visited.contains(n1)) {   
 						todo.add(n1);
 						distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));
 					}

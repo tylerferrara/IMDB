@@ -28,6 +28,7 @@ public class IMDBActorsGraph implements Graph {
 			ArrayList<String> movieList = new ArrayList<String>();
 			ArrayList<PerformerNode> nodeList = new ArrayList<PerformerNode>();
 			
+			//Begin Parsing
 			while(scanner.hasNext()) {
 				if(!searching && 0 <= scanner.nextLine().indexOf("Name			Titles")) {
 					scanner.nextLine();
@@ -119,9 +120,10 @@ public class IMDBActorsGraph implements Graph {
 		for(String movieTitle: movies) {
 			if(visitedMovies.containsKey(movieTitle)) {
 				// Update movie to have this actor as it's neighbor
+				// Prevents duplicate Movies
 				MovieNode tempMovie = visitedMovies.get(movieTitle);
 				ArrayList<PerformerNode> mNeighbors = tempMovie.getNeighbors();
-				mNeighbors.add(Actor); // <=== although Actor will mutate, it will alwayse point to the same location
+				mNeighbors.add(Actor); // <=== although Actor will mutate, it will always point to the same location
 				tempMovie.setNeighbors(mNeighbors);
 				Movies.add(tempMovie);
 			} else {
