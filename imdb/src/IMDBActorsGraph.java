@@ -2,16 +2,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 public class IMDBActorsGraph implements Graph {
 	
 	private ArrayList<PerformerNode> nodes; 
+	private HashMap<String, MovieNode> visitedMovies;
 	
 	public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
+		visitedMovies = new HashMap<String, MovieNode>();
+		parse(actorsFilename);
+		parse(actressesFilename);
+	}
+	
+	private void parse(String fileName) throws IOException {
 		try {
 			
-			final Scanner scanner = new Scanner(new File(actorsFilename), "ISO-8859-1");
+			final Scanner scanner = new Scanner(new File(fileName), "ISO-8859-1");
 
 			boolean searching = false;
 			String actorName = null;
@@ -19,11 +29,7 @@ public class IMDBActorsGraph implements Graph {
 			ArrayList<PerformerNode> nodeList = new ArrayList<PerformerNode>();
 			
 			while(scanner.hasNext()) {
-				if(!searching && 0 <= scanner.nextLine().indexOf("THE ACTORS LIST")) {
-					scanner.nextLine();
-					scanner.nextLine();
-					scanner.nextLine();
-					scanner.nextLine();
+				if(!searching && 0 <= scanner.nextLine().indexOf("Name			Titles")) {
 					scanner.nextLine();
 					System.out.println("Time to search...");					
 					searching = true;
@@ -106,14 +112,26 @@ public class IMDBActorsGraph implements Graph {
 		PerformerNode Actor = new PerformerNode(actor);
 		
 		// Create MovieNodes
-		ArrayList<PerformerNode> Perform = new ArrayList<PerformerNode>();
-		Perform.add(Actor);
+		ArrayList<PerformerNode> thisPerformer = new ArrayList<PerformerNode>();
+		thisPerformer.add(Actor);
 		
 		ArrayList<MovieNode> Movies = new ArrayList<MovieNode>();
-		for(String movie: movies) {
-			Movies.add(new MovieNode(movie, Perform));
+		for(String movieTitle: movies) {
+			if(visitedMovies.containsKey(movieTitle)) {
+				// Update movie to have this actor as it's neighbor
+				MovieNode tempMovie = visitedMovies.get(movieTitle);
+				ArrayList<PerformerNode> mNeighbors = tempMovie.getNeighbors();
+				mNeighbors.add(Actor); // <=== although Actor will mutate, it will alwayse point to the same location
+				tempMovie.setNeighbors(mNeighbors);
+				Movies.add(tempMovie);
+			} else {
+				// NEW MOVIE
+				MovieNode newMovie = new MovieNode(movieTitle, thisPerformer);
+				Movies.add(newMovie);
+				visitedMovies.put(movieTitle, newMovie);
+			}
 		}
-
+		
 		Actor.setNeighbors(Movies);
 		
 		return Actor;
@@ -129,7 +147,30 @@ public class IMDBActorsGraph implements Graph {
 		}
 		return movieName;
 	}
-
+	
+	//TAKE THIS OUT!!!!!!!!!!
+	public void testMovieNodes() {
+		for(Entry<String, MovieNode> m: this.visitedMovies.entrySet()) {
+			MovieNode tempMovie = m.getValue();
+			ArrayList<PerformerNode> n = tempMovie.getNeighbors();
+			if(n.size() > 1) {
+				System.out.println();
+				System.out.println("=========NAME======== : " + tempMovie.getName());
+				ArrayList<String> temp = new ArrayList<String>();
+				for(PerformerNode p: n) {
+					temp.add(p.getName());
+				}
+				System.out.println(temp);
+			}
+		}
+		
+	}
+	
+	public void testPerformerNode(String name) {
+		for(PerformerNode p: this.nodes) {
+			
+		}
+	}
 
 	@Override
 	public Collection<? extends Node> getNodes() {
@@ -138,10 +179,7 @@ public class IMDBActorsGraph implements Graph {
 
 	@Override
 	public Node getNodeByName(String name) {
-		// Find node with given name (key)
-		//
-		// Implimentation depends on data type
-		//
+
 		return null;
 	}
 

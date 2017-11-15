@@ -26,7 +26,7 @@ public class MovieNode implements Node{
 		return this.name;
 	}
 	
-	public Collection<? extends Node> getNeighbors() {
+	public ArrayList<PerformerNode> getNeighbors() {
 		return this.neighbors;
 	}
 
