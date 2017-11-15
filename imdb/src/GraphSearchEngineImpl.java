@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,29 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 	@Override
 	public List<Node> findShortestPath(Node s, Node t) {
-		List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
+		
+		Map<Node,Integer> valueMap = new HashMap<Node, Integer>();
+		List<Node> visited = new LinkedList<>();
+		LinkedList<Node> nodesToVisit = new LinkedList<>();
+		nodesToVisit.add(s);
+		boolean targetFound=false;
+		while(nodesToVisit.size()>0)
+		{
+			Node n = nodesToVisit.remove();
+			visited.add(n);
+			
+			
+			for(Node node : nodesToVisit)
+			{
+				if(!nodesToVisit.contains(node) && !visited.contains(node))
+				{
+					nodesToVisit.add(node);
+				}
+			}
+		}
+		return visited;
+	}
+		/*List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
 		Queue<? extends Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
 		Map<? extends Node, Integer> distance = null;
 		boolean found = false;
@@ -55,7 +78,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return fPath;
 		} else {
 			return null;
-		}
+		}*/
 	}
 
 
