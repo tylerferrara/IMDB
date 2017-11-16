@@ -19,7 +19,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		todo.add(s);
 		distance.put(s, Integer.valueOf(0));
 		
-		while (todo.size() > 0) {
+		while (todo.size() > 0 && todo.poll()!=null) {
+			
 			Node n = todo.poll();
 			visited.add(n); 
 			if (n.equals(t)) {
@@ -61,13 +62,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return fPath;
 		} else {
 			return null;
-<<<<<<< HEAD
-		}*/
-	
 
-
-=======
 		}
 	}
->>>>>>> eef1acc981d3edee7d707edac231f46ff3cf75c0
 }
