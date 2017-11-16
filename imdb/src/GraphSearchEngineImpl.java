@@ -10,31 +10,10 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 	@Override
 	public List<Node> findShortestPath(Node s, Node t) {
-		
-		Map<Node,Integer> valueMap = new HashMap<Node, Integer>();
-		List<Node> visited = new LinkedList<>();
-		LinkedList<Node> nodesToVisit = new LinkedList<>();
-		nodesToVisit.add(s);
-		boolean targetFound=false;
-		while(nodesToVisit.size()>0)
-		{
-			Node n = nodesToVisit.remove();
-			visited.add(n);
-			
-			
-			for(Node node : nodesToVisit)
-			{
-				if(!nodesToVisit.contains(node) && !visited.contains(node))
-				{
-					nodesToVisit.add(node);
-				}
-			}
-		}
-		return visited;
-	}
-		/*List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
-		Queue<? extends Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
-		Map<? extends Node, Integer> distance = null;
+	
+		List<Node> visited = new ArrayList<>();		//Might want to make a LinkedList
+		Queue<Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
+		Map<Node, Integer> distance = new HashMap<Node,Integer>();
 		boolean found = false;
 		
 		todo.add(s);
@@ -51,35 +30,44 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				for (Node n1 : n.getNeighbors()) {
 					if (!todo.contains(n1) && !visited.contains(n1)) {   
 						todo.add(n1);
-						distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));
+						if(!distance.containsKey(n1))
+							distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));							
 					}
 				}
 			}
 		}
 		if (found) {
-			Stack<? extends Node> bPath = null;
+			Stack<Node> bPath = new Stack<Node>();
 			bPath.push(t);
 			Node n0 = t;
 			int step = distance.get(t).intValue();
-			while (step > 0) {
+			Node min = null;
+			int minD = Integer.MAX_VALUE;
+			while (step - 1 >= 0) {
 				for (Node n1 : n0.getNeighbors()) {
-					if (distance.get(n1).intValue() == step - 1) {
-						bPath.push(n1);
-						step--;
-						n0 = n1;
-						break; //I'm assuming this will just break the for loop and not the while loop
+					if (distance.get(n1).intValue() < minD) {
+						min = n1;
+						minD = distance.get(n1).intValue();
 					}
 				}
+				step = distance.get(min).intValue();
+				bPath.push(min);
+				n0 = min;
 			}
-			List<? extends Node> fPath = null;	
+			List<Node> fPath = new LinkedList<>();	
 			while (!bPath.isEmpty()) {
 				fPath.add(bPath.pop());
 			}	
 			return fPath;
 		} else {
 			return null;
+<<<<<<< HEAD
 		}*/
 	
 
 
+=======
+		}
+	}
+>>>>>>> eef1acc981d3edee7d707edac231f46ff3cf75c0
 }

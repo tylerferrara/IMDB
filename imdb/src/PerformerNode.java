@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class PerformerNode implements Node{
 	
@@ -29,6 +28,15 @@ public class PerformerNode implements Node{
 
 	public ArrayList<MovieNode> getNeighbors() {
 		return this.neighbors;
+	}
+	public boolean equalsI(Node n1)
+	{
+		if(this.name.equals(n1.getName()))
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 	
 }
