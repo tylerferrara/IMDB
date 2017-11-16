@@ -102,16 +102,18 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			bPath.push(t);
 			Node n0 = t;
 			int step = distance.get(t).intValue();
-			while (step > 0) {
+			Node min = null;
+			int minD = Integer.MAX_VALUE;
+			while (step - 1 >= 0) {
 				for (Node n1 : n0.getNeighbors()) {
-					
-					if (distance.get(n1).intValue() == step - 1) {
-						bPath.push(n1);
-						step--;
-						n0 = n1;
-						break; //I'm assuming this will just break the for loop and not the while loop
+					if (distance.get(n1).intValue() < minD) {
+						min = n1;
+						minD = distance.get(n1).intValue();
 					}
 				}
+				step = distance.get(min).intValue();
+				bPath.push(min);
+				n0 = min;
 			}
 			List<? extends Node> fPath = null;	
 			while (!bPath.isEmpty()) {
