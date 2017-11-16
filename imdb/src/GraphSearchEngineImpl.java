@@ -10,71 +10,10 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 	@Override
 	public List<Node> findShortestPath(Node s, Node t) {
-		
-		Map<Node,Integer> valueMap = new HashMap<Node, Integer>();
-		List<Node> visited = new LinkedList<>();
-		LinkedList<Node> nodesToVisit = new LinkedList<>();
-		nodesToVisit.add(s);
-		boolean targetFound = false;
 	
-		int distance = 0;
-		List<Node> finalPath = new LinkedList<>();
-		while(nodesToVisit.size()>0)
-		{
-			
-			Node n = nodesToVisit.remove();
-			for(Node subNode: n.getNeighbors())
-			{
-				nodesToVisit.add(subNode);
-			}
-			visited.add(n);
-			
-			if(n!= null && n.equals(t))
-			{
-				targetFound = true;
-				break;
-			}
-			else
-			{
-				
-				for(Node node : nodesToVisit)
-				{
-					
-					if(!nodesToVisit.contains(node) && !visited.contains(node))
-					{
-						nodesToVisit.add(node);
-						valueMap.put(node, distance);
-					}
-				}
-				distance++;
-			}
-		}
-		if(targetFound)
-		{
-			Node n0 = t;
-			for(int i = valueMap.get(t); i> 0; i--)
-			{
-				for(Node n1 : n0.getNeighbors())
-				{
-					if(valueMap.get(n1)== i -1)
-					{
-						finalPath.add(n1);
-						n0=n1;
-					}
-				}
-			}
-		}
-		LinkedList<Node> temp = new LinkedList<>();
-		for(int i =finalPath.size()-1; i >= 0;i++)
-		{
-			temp.add(finalPath.get(i));
-		}
-		finalPath=temp;
-		return finalPath;
-	}
-		List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
-		Queue<? extends Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
-		Map<? extends Node, Integer> distance = null;
+		List<Node> visited = new ArrayList<>();		//Might want to make a LinkedList
+		Queue<Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
+		Map<Node, Integer> distance = new HashMap<Node,Integer>();
 		boolean found = false;
 		
 		todo.add(s);
@@ -98,7 +37,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			}
 		}
 		if (found) {
-			Stack<? extends Node> bPath = null;
+			Stack<Node> bPath = null;
 			bPath.push(t);
 			Node n0 = t;
 			int step = distance.get(t).intValue();
@@ -115,7 +54,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				bPath.push(min);
 				n0 = min;
 			}
-			List<? extends Node> fPath = null;	
+			List<Node> fPath = null;	
 			while (!bPath.isEmpty()) {
 				fPath.add(bPath.pop());
 			}	
@@ -124,6 +63,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return null;
 		}
 	}
+
+	
 
 
 
