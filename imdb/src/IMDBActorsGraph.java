@@ -11,6 +11,12 @@ public class IMDBActorsGraph implements Graph {
 	private ArrayList<PerformerNode> nodes; 
 	private HashMap<String, MovieNode> visitedMovies;
 	
+	/**
+	 * 
+	 * @param actorsFilename path
+	 * @param actressesFilename path
+	 * @throws IOException
+	 */
 	public IMDBActorsGraph(String actorsFilename, String actressesFilename) throws IOException {
 		visitedMovies = new HashMap<String, MovieNode>();
 		parse(actorsFilename);
@@ -30,8 +36,7 @@ public class IMDBActorsGraph implements Graph {
 			//Begin Parsing
 			while(scanner.hasNext()) {
 				if(!searching && 0 <= scanner.nextLine().indexOf("Name			Titles")) {
-					scanner.nextLine();
-					System.out.println("Time to search...");					
+					scanner.nextLine();				
 					searching = true;
 				}
 				
@@ -45,10 +50,6 @@ public class IMDBActorsGraph implements Graph {
 						// done with actor
 						
 						if(!movieList.isEmpty()) {
-							System.out.println(actorName);
-							System.out.println(movieList);
-							System.out.println();
-							
 							nodeList.add(buildNodes(actorName, movieList));
 						}
 						
@@ -84,22 +85,22 @@ public class IMDBActorsGraph implements Graph {
 			scanner.close();
 			
 			if(!movieList.isEmpty()) {
-				System.out.println(actorName);
-				System.out.println(movieList);
-				System.out.println();
-				
 				nodeList.add(buildNodes(actorName, movieList));
 			}
 			
 			this.nodes = nodeList;
-			
-			System.out.println("FINISHED");
 			
 		} catch(IOException error) {
 			throw error;
 		}		
 	}
 	
+	/**
+	 *
+	 * @param actor's name
+	 * @param list of movie name's the actor is in
+	 * @return the constructed performer node with name: actor
+	 */
 	private PerformerNode buildNodes(String actor, ArrayList<String> movies) {
 		//Make actor without any neighbors
 		PerformerNode myNewNode = new PerformerNode(actor);
@@ -134,65 +135,37 @@ public class IMDBActorsGraph implements Graph {
 		
 		//add movieCollection to My New Node
 		myNewNode.setNeighbors(movieCollection);
-		
 		return myNewNode;
 	}
 	
-	
+	/**
+	 * 
+	 * @param the currentLine of the scanner
+	 * @return the name of the movie (as long as it's not a TV show)
+	 */
 	private String getMovie(String currentLine) {
 		String movieName = null;
 		if(!currentLine.contains("\"") && !currentLine.contains("(TV)")) {
-				
 				int end = currentLine.indexOf(')');
 				movieName = currentLine.substring(0, end+1);
-			
 		}
 		return movieName;
 	}
-	
-	public void testMovieNodes() {
-		for(Entry<String, MovieNode> m: this.visitedMovies.entrySet()) {
-			MovieNode tempMovie = m.getValue();
-			ArrayList<PerformerNode> n = tempMovie.getNeighbors();
-			if(n.size() > 1) {
-				System.out.println();
-				System.out.println("=========NAME======== : " + tempMovie.getName());
-				ArrayList<String> temp = new ArrayList<String>();
-				for(PerformerNode p: n) {
-					temp.add(p.getName());
-				}
-				System.out.println(temp);
-			}
-		}
-	}
-	
-	public void testPerformerNode(String name) {
-		for(PerformerNode p: this.nodes) {
-			if(p.getName().equals(name)) {
-				System.out.println("All Movies For: " + name);
-				ArrayList<String> temp = new ArrayList<String>();
-				for(MovieNode m: p.getNeighbors()) {
-					temp.add(m.getName());
-				}
-				System.out.println(temp);
-			}
-		}
-	}
-	
-	public void justATest() {
-		MovieNode n = this.visitedMovies.get("Honey 2 (2011)");
-		ArrayList<String> w = new ArrayList<String>();
-		for(PerformerNode p: n.getNeighbors()) {
-			w.add(p.getName());
-		}
-		System.out.println(w);
-	}
 
+	/**
+	 * 
+	 * @param  null
+	 * @return ArrayList of PerformerNodes
+	 */
 	@Override
 	public Collection<? extends Node> getNodes() {
 		return this.nodes;
 	}
 
+	/**
+	 * @param  the name of the node being searched
+	 * @return the node searched for
+	 */
 	@Override
 	public Node getNodeByName(String name) {
 		PerformerNode myNode = null;
