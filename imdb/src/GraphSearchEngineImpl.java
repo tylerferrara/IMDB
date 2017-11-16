@@ -37,7 +37,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			}
 		}
 		if (found) {
-			Stack<Node> bPath = null;
+			Stack<Node> bPath = new Stack<Node>();
 			bPath.push(t);
 			Node n0 = t;
 			int step = distance.get(t).intValue();
@@ -54,7 +54,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				bPath.push(min);
 				n0 = min;
 			}
-			List<Node> fPath = null;	
+			List<Node> fPath = new LinkedList<>();	
 			while (!bPath.isEmpty()) {
 				fPath.add(bPath.pop());
 			}	
@@ -63,8 +63,4 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return null;
 		}
 	}
-
-	
-
-
-
+}
