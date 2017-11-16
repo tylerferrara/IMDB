@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -59,7 +58,6 @@ public class IMDBActorsGraph implements Graph {
 					} else if(!currentLine.substring(0,1).equals("\t")) {
 						
 						// New actor
-						
 						for(int i = 0; i < currentLine.length() - 1; i++) {
 							if(currentLine.substring(i, i+1).equals("\t")) {
 								
@@ -93,13 +91,7 @@ public class IMDBActorsGraph implements Graph {
 				nodeList.add(buildNodes(actorName, movieList));
 			}
 			
-			nodes = nodeList;
-			
-			ArrayList<String> collection = new ArrayList<String>();
-			for(PerformerNode n: this.nodes) {
-				collection.add(n.getName());
-			}
-			System.out.println(collection);
+			this.nodes = nodeList;
 			
 			System.out.println("FINISHED");
 			
@@ -109,35 +101,43 @@ public class IMDBActorsGraph implements Graph {
 	}
 	
 	private PerformerNode buildNodes(String actor, ArrayList<String> movies) {
-		// Create PerformerNode
-		PerformerNode Actor = new PerformerNode(actor);
+		//Make actor without any neighbors
+		PerformerNode myNewNode = new PerformerNode(actor);
 		
-		// Create MovieNodes
-		ArrayList<PerformerNode> thisPerformer = new ArrayList<PerformerNode>();
-		thisPerformer.add(Actor);
+		//build movies based on its name
 		
-		ArrayList<MovieNode> Movies = new ArrayList<MovieNode>();
-		for(String movieTitle: movies) {
-			if(visitedMovies.containsKey(movieTitle)) {
-				// Update movie to have this actor as it's neighbor
-				// Prevents duplicate Movies
-				MovieNode tempMovie = visitedMovies.get(movieTitle);
-				ArrayList<PerformerNode> mNeighbors = tempMovie.getNeighbors();
-				mNeighbors.add(Actor); // <=== although Actor will mutate, it will always point to the same location
-				tempMovie.setNeighbors(mNeighbors);
-				Movies.add(tempMovie);
+			//Collection for movie nodes (once they are built)
+			ArrayList<MovieNode> movieCollection = new ArrayList<MovieNode>();
+		
+		for(String movie: movies) {
+			
+			if(this.visitedMovies.containsKey(movie)) {
+				// OLD NODE
+				MovieNode oldMovieNode = this.visitedMovies.get(movie);
+				ArrayList<PerformerNode> oldMovieNeighbors = oldMovieNode.getNeighbors();
+				
+					//update moive neighbors to add currect actor
+				oldMovieNeighbors.add(myNewNode);
+				oldMovieNode.setNeighbors(oldMovieNeighbors);
+				movieCollection.add(oldMovieNode);
+				
 			} else {
-				// NEW MOVIE
-				MovieNode newMovie = new MovieNode(movieTitle, thisPerformer);
-				Movies.add(newMovie);
-				visitedMovies.put(movieTitle, newMovie);
+				// NEW NODE
+				MovieNode newMovieNode = new MovieNode(movie);
+				ArrayList<PerformerNode> oneActor = new ArrayList<PerformerNode>();
+				newMovieNode.setNeighbors(oneActor);
+				movieCollection.add(newMovieNode);
+				this.visitedMovies.put(movie, newMovieNode);
 			}
+			
 		}
 		
-		Actor.setNeighbors(Movies);
+		//add movieCollection to My New Node
+		myNewNode.setNeighbors(movieCollection);
 		
-		return Actor;
+		return myNewNode;
 	}
+	
 	
 	private String getMovie(String currentLine) {
 		String movieName = null;
@@ -150,7 +150,6 @@ public class IMDBActorsGraph implements Graph {
 		return movieName;
 	}
 	
-	//TAKE THIS OUT!!!!!!!!!!
 	public void testMovieNodes() {
 		for(Entry<String, MovieNode> m: this.visitedMovies.entrySet()) {
 			MovieNode tempMovie = m.getValue();
@@ -165,13 +164,28 @@ public class IMDBActorsGraph implements Graph {
 				System.out.println(temp);
 			}
 		}
-		
 	}
 	
 	public void testPerformerNode(String name) {
 		for(PerformerNode p: this.nodes) {
-			
+			if(p.getName().equals(name)) {
+				System.out.println("All Movies For: " + name);
+				ArrayList<String> temp = new ArrayList<String>();
+				for(MovieNode m: p.getNeighbors()) {
+					temp.add(m.getName());
+				}
+				System.out.println(temp);
+			}
 		}
+	}
+	
+	public void justATest() {
+		MovieNode n = this.visitedMovies.get("Honey 2 (2011)");
+		ArrayList<String> w = new ArrayList<String>();
+		for(PerformerNode p: n.getNeighbors()) {
+			w.add(p.getName());
+		}
+		System.out.println(w);
 	}
 
 	@Override
@@ -181,8 +195,14 @@ public class IMDBActorsGraph implements Graph {
 
 	@Override
 	public Node getNodeByName(String name) {
-
-		return null;
+		PerformerNode myNode = null;
+		for(PerformerNode node: this.nodes) {
+			if(node.getName().equals(name)) {
+				myNode = node;
+				break;
+			}
+		}
+		return myNode;
 	}
 
 }

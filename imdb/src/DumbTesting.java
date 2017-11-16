@@ -4,7 +4,8 @@ import java.util.ArrayList;
 public class DumbTesting {
 	
 	public static void main(String[] args) throws IOException {
-		IMDBActorsGraph actors = new IMDBActorsGraph("C:\\Users\\johnm\\Desktop\\test_list.txt", "C:\\Users\\johnm\\Desktop\\test_list.txt");
+		IMDBActorsGraph actors = new IMDBActorsGraph("/Users/tylerferrara/Documents/CS210X/Project3/IMDB/actresses_test.list", "/Users/tylerferrara/Documents/CS210X/Project3/IMDB/actors_test.list");
+//		IMDBActorsGraph actors = new IMDBActorsGraph("C:\\Users\\johnm\\Desktop\\test_list.txt", "C:\\Users\\johnm\\Desktop\\test_list.txt");
 //		IMDBActorsGraph actors = new IMDBActorsGraph("C:\\Users\\tyler\\Desktop", "C:\\Users\\tyler\\Desktop");
 		
 		
@@ -39,6 +40,14 @@ public class DumbTesting {
 		
 		actors.testMovieNodes();
 		
+		// TEST PERFORMER NODE	
+		actors.testPerformerNode("\'Draico\' Johnson Dondraico");
+		
+		
+		System.out.println();
+		
+		// A TEST
+		actors.justATest();
 		
 	}
 	
