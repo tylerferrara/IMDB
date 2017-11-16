@@ -15,24 +15,64 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		List<Node> visited = new LinkedList<>();
 		LinkedList<Node> nodesToVisit = new LinkedList<>();
 		nodesToVisit.add(s);
-		boolean targetFound=false;
+		boolean targetFound = false;
+	
+		int distance = 0;
+		List<Node> finalPath = new LinkedList<>();
 		while(nodesToVisit.size()>0)
 		{
+			
 			Node n = nodesToVisit.remove();
+			for(Node subNode: n.getNeighbors())
+			{
+				nodesToVisit.add(subNode);
+			}
 			visited.add(n);
 			
-			
-			for(Node node : nodesToVisit)
+			if(n!= null && n.equals(t))
 			{
-				if(!nodesToVisit.contains(node) && !visited.contains(node))
+				targetFound = true;
+				break;
+			}
+			else
+			{
+				
+				for(Node node : nodesToVisit)
 				{
-					nodesToVisit.add(node);
+					
+					if(!nodesToVisit.contains(node) && !visited.contains(node))
+					{
+						nodesToVisit.add(node);
+						valueMap.put(node, distance);
+					}
+				}
+				distance++;
+			}
+		}
+		if(targetFound)
+		{
+			Node n0 = t;
+			for(int i = valueMap.get(t); i> 0; i--)
+			{
+				for(Node n1 : n0.getNeighbors())
+				{
+					if(valueMap.get(n1)== i -1)
+					{
+						finalPath.add(n1);
+						n0=n1;
+					}
 				}
 			}
 		}
-		return visited;
+		LinkedList<Node> temp = new LinkedList<>();
+		for(int i =finalPath.size()-1; i >= 0;i++)
+		{
+			temp.add(finalPath.get(i));
+		}
+		finalPath=temp;
+		return finalPath;
 	}
-		/*List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
+		List<? extends Node> visited = new ArrayList<>();		//Might want to make a LinkedList
 		Queue<? extends Node> todo = new LinkedList<>(); 		//Need to create a data type that implements queue, (Queue is an interface?)
 		Map<? extends Node, Integer> distance = null;
 		boolean found = false;
@@ -51,7 +91,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				for (Node n1 : n.getNeighbors()) {
 					if (!todo.contains(n1) && !visited.contains(n1)) {   
 						todo.add(n1);
-						distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));
+						if(!distance.containsKey(n1))
+							distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));							
 					}
 				}
 			}
@@ -63,6 +104,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			int step = distance.get(t).intValue();
 			while (step > 0) {
 				for (Node n1 : n0.getNeighbors()) {
+					
 					if (distance.get(n1).intValue() == step - 1) {
 						bPath.push(n1);
 						step--;
@@ -78,8 +120,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			return fPath;
 		} else {
 			return null;
-		}*/
+		}
 	}
 
 
-}
+
