@@ -17,11 +17,19 @@ public class IMDBMoviesGraph implements Graph {
 	 * @throws IOException
 	 */
 	public IMDBMoviesGraph(String actorsFilename, String actressesFilename) throws IOException {
-		visitedMovies = new HashMap<String, MovieNode>();
+		this.visitedMovies = new HashMap<String, MovieNode>();
+		this.nodes = new ArrayList<PerformerNode>();
 		parse(actorsFilename);
 		parse(actressesFilename);
 	}
 	
+	/**
+	 * This function scans through the file and builds
+	 * both Movie and Actor nodes on the fly.
+	 * 
+	 * @param String filename to parse
+	 * @throws IOException
+	 */
 	private void parse(String fileName) throws IOException {
 		try {
 			
@@ -34,16 +42,20 @@ public class IMDBMoviesGraph implements Graph {
 			
 			//Begin Parsing
 			while(scanner.hasNext()) {
-				if(!searching && 0 <= scanner.nextLine().indexOf("Name			Titles")) {
+				String currentLine = scanner.nextLine();
+				
+				if(!searching && currentLine.contains("Name") && currentLine.contains("Titles")) {
 					scanner.nextLine();				
 					searching = true;
 				}
 				
-				String currentLine;
-				
 				if (searching){
 					
-					currentLine = scanner.nextLine();
+					if(currentLine.contains("-----------------------------------------------------------------------------")) {
+						// end of parsing
+						searching = false;
+						break;
+					}
 					
 					if(currentLine.equals("")) {
 						// done with actor
@@ -61,7 +73,7 @@ public class IMDBMoviesGraph implements Graph {
 						for(int i = 0; i < currentLine.length() - 1; i++) {
 							if(currentLine.substring(i, i+1).equals("\t")) {
 								
-								actorName = currentLine.substring(0, i).replaceAll(",", "");
+								actorName = currentLine.substring(0, i);
 								currentLine = currentLine.substring(i).replaceAll("\t", "");
 								String movie = getMovie(currentLine);
 								if(movie != null) {
@@ -82,12 +94,11 @@ public class IMDBMoviesGraph implements Graph {
 				}
 			}
 			scanner.close();
-			
-			if(!movieList.isEmpty()) {
-				nodeList.add(buildNodes(actorName, movieList));
+
+			if(!nodeList.isEmpty()) {
+				this.nodes.addAll(nodeList);
 			}
 			
-			this.nodes = nodeList;
 			
 		} catch(IOException error) {
 			throw error;

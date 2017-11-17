@@ -72,4 +72,13 @@ public class GraphPartialTester {
 		}
 		assertTrue(found);
 	}
+	
+	@Test
+	/**
+	 * Verifies that a specific actress has been parsed.
+	 */
+	public void bigPoppa () throws IOException {
+		IMDBActorsGraph tactorsGraph = new IMDBActorsGraph("actors.list", "actresses.list");
+	}
+	
 }
