@@ -100,7 +100,6 @@ public class IMDBActorsGraph implements Graph {
 				this.nodes.addAll(nodeList);
 			}
 			
-			
 		} catch(IOException error) {
 			throw error;
 		}		
@@ -165,7 +164,7 @@ public class IMDBActorsGraph implements Graph {
 	/**
 	 * 
 	 * @param  null
-	 * @return ArrayList of PerformerNodes
+	 * @return ArrayList of PerformerNodes from parsed files
 	 */
 	@Override
 	public Collection<? extends Node> getNodes() {
