@@ -16,19 +16,24 @@ public class GraphPartialTester {
 	 * Verifies that there is no shortest path between a specific and actor and actress.
 	 */
 	public void findShortestPath () {
-		final Node actor1 = actorsGraph.getNodeByName("Actor1");
-		final Node actress2 = actorsGraph.getNodeByName("Actress2");
+		final Node actor1 = actorsGraph.getNodeByName("actor1");
+		
+		final Node actress2 = actorsGraph.getNodeByName("actress2");
+	
 		final List<Node> shortestPath = searchEngine.findShortestPath(actor1, actress2);
-		assertNull(shortestPath);  // there is no path between these people
+		
+		assertNull(shortestPath);
+		
+		  // there is no path between these people
 	}
-
+	
 	@Before
 	/**
 	 * Instantiates the actors and movies graphs
 	 */
 	public void setUp () throws IOException {
-		actorsGraph = new IMDBActorsGraph("actors_test.list", "actresses_test.list");
-		moviesGraph = new IMDBMoviesGraph("actors_test.list", "actresses_test.list");
+		actorsGraph = new IMDBActorsGraph("actresses_first_10000_lines.list", "actresses_first_10000_lines.list");
+		moviesGraph = new IMDBMoviesGraph("actresses_first_10000_lines.list", "actresses_first_10000_lines.list");
 		searchEngine = new GraphSearchEngineImpl();
 	}
 
@@ -48,7 +53,45 @@ public class GraphPartialTester {
 	public void testSpecificMovie () {
 		testFindNode(moviesGraph, "Movie1 (2001)");
 	}
+	@Test
+	public void testGenericGraph()
+	{
+		GraphSearchEngine testGraph = new GraphSearchEngineImpl();
+		Node n1 = new testNodes("n1", null);
+		Node n2 = new testNodes("n2", null);
+		Node n3 = new testNodes("n3", null);
+		Node n4 = new testNodes("n4", null);
+		Node n5 = new testNodes("n5", null);
+		ArrayList<Node> list1= new ArrayList<>();
+		list1.add(n2);
+		list1.add(n3);
+		ArrayList<Node> list2= new ArrayList<>();
+		list2.add(n4);
+		list2.add(n1);
+		ArrayList<Node> list3= new ArrayList<>();
+		list3.add(n5);
+		list3.add(n1);
+		ArrayList<Node> list4= new ArrayList<>();
+		list4.add(n2);
+		list4.add(n5);
+		ArrayList<Node> list5= new ArrayList<>();
+		list5.add(n4);
+		list5.add(n3);
+		((testNodes)n1).setNeighbors(list1);
+		((testNodes)n2).setNeighbors(list2);
+		((testNodes)n3).setNeighbors(list3);
+		((testNodes)n4).setNeighbors(list4);
+		((testNodes)n5).setNeighbors(list5);
 
+		Node n6 = new testNodes("n6", null);
+		System.out.println("Node 1 path: " + testGraph.findShortestPath(n1, n6));
+		System.out.println("Node 1 - Node 5 path: " + testGraph.findShortestPath(n1, n5));
+		
+		
+		
+		
+		
+	}
 	@Test
 	/**
 	 * Verifies that a specific actress has been parsed.
@@ -73,12 +116,6 @@ public class GraphPartialTester {
 		assertTrue(found);
 	}
 	
-	@Test
-	/**
-	 * Verifies that a specific actress has been parsed.
-	 */
-	public void bigPoppa () throws IOException {
-		IMDBActorsGraph tactorsGraph = new IMDBActorsGraph("actors.list", "actresses.list");
-	}
+	
 	
 }

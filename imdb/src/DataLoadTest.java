@@ -28,7 +28,7 @@ public class DataLoadTest {
 	public void loadedApproximatelyCorrectNumberOfMovies () {
 		final int TOLERANCE = 100;
 		final int CORRECT = 4519;
-		System.out.println(moviesGraph.getNodes().size());
+		System.out.println(moviesGraph.getNodes().size() + " Mode nodes");
 		assertTrue(Math.abs(moviesGraph.getNodes().size() - CORRECT) <= TOLERANCE);
 		System.out.println("CS210XGRDR +3 loadedApproximatelyCorrectNumberOfMovies");
 	}
@@ -73,7 +73,7 @@ public class DataLoadTest {
 	@Before
 	public void setUp () throws IOException {
 		String path = "/Users/tylerferrara/Documents/CS210X/Project3";
-		actorsGraph = new IMDBActorsGraph(path + "/actors_first_10000_lines.list", path + "/actresses_first_10000_lines.list");
-		moviesGraph = new IMDBMoviesGraph(path + "/actors_first_10000_lines.list", path + "/actresses_first_10000_lines.list");
+		actorsGraph = new IMDBActorsGraph("actors_first_10000_lines.list","actresses_first_10000_lines.list");
+		moviesGraph = new IMDBMoviesGraph("actors_first_10000_lines.list","actresses_first_10000_lines.list");
 	}
 }

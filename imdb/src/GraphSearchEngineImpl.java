@@ -8,7 +8,10 @@ import java.util.Stack;
 
 public class GraphSearchEngineImpl implements GraphSearchEngine {
 
-	@Override
+	/**Finds the shorest path from source node s to target node t
+	 * @param s Source Node
+	 * @param t Target Node
+	 */
 	public List<Node> findShortestPath(Node s, Node t) {
 	
 		List<Node> visited = new ArrayList<>();		//Might want to make a LinkedList
@@ -17,26 +20,31 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		boolean found = false;
 		
 		todo.add(s);
+		
 		distance.put(s, Integer.valueOf(0));
 		
-		while (todo.size() > 0 && todo.poll()!=null) {
+		//Begin searching of the graph
+		while (todo.size() > 0 && todo.peek()!=null) {
 			
-			Node n = todo.poll();
+			Node n = todo.peek();
 			visited.add(n); 
 			if (n.equals(t)) {
 				found = true;
 				break;
 			} else {
 				//Add sub-nodes to todo, increase depth of search
+				//System.out.println(neighbors);
 				for (Node n1 : n.getNeighbors()) {
-					if (!todo.contains(n1) && !visited.contains(n1)) {   
+					if (!todo.contains(n1) && !visited.contains(n1) && !distance.containsKey(n1)) {   //Make sure we are not overriding values
 						todo.add(n1);
-						if(!distance.containsKey(n1))
-							distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));							
+						distance.put(n1, Integer.valueOf(distance.get(n).intValue() + 1));		
+							
 					}
 				}
 			}
+			todo.remove();
 		}
+		//If found begin backtracking
 		if (found) {
 			Stack<Node> bPath = new Stack<Node>();
 			bPath.push(t);

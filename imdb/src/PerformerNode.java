@@ -59,5 +59,9 @@ public class PerformerNode implements Node{
 		else
 			return false;
 	}
+	public String toString()
+	{
+		return this.getName();
+	}
 	
 }

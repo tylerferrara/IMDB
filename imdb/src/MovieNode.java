@@ -47,5 +47,19 @@ public class MovieNode implements Node{
 	public ArrayList<PerformerNode> getNeighbors() {
 		return this.neighbors;
 	}
+	public boolean equals(Node n1)
+	{
+		if(this.name.equals(n1.getName()))
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	public String toString()
+	{
+		return this.getName();
+	}
+	
 
 }
