@@ -42,10 +42,20 @@ public class DataLoadTest {
 	public void testSpecificActor2 () {
 		testFindNode(actorsGraph, "Abad, Javier (III)");
 	}
+	
+	@Test(timeout=5000)
+	public void testSpecificActor3 () {
+		testFindNode(actorsGraph, "Aaker, Jedediah");
+	}
 
 	@Test(timeout=5000)
 	public void testSpecificActress2 () {
 		testFindNode(actorsGraph, "Abboud, Sereen");
+	}
+	
+	@Test(timeout=5000)
+	public void testSpecificActress3 () {
+		testFindNode(actorsGraph, ";laskdjflsdkfj");
 	}
 
 	@Test(timeout=5000)
@@ -56,6 +66,11 @@ public class DataLoadTest {
 	@Test(timeout=5000)
 	public void testSpecificMovie2 () {
 		testFindNode(moviesGraph, "Pele's Appeal (1990)");
+	}
+	
+	@Test(timeout=5000)
+	public void testSpecificMovie3 () {
+		testFindNode(moviesGraph, "Carlo & Ester (1994)");
 	}
 
 	private static void testFindNode (Graph graph, String name) {
